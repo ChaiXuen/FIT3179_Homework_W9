@@ -1,0 +1,72 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": "The Most Popular Genre Of Movies For Each Country",
+    "width": 800,
+    "height": 400,
+    "projection": { "type": "equalEarth" },
+    "layer" : [
+        {
+            "data": {
+                "url": "https://raw.githubusercontent.com/ChaiXuen/FIT3179_Homework_W9/main/js/ne_110m.json",
+                "format": {"type": "topojson", "feature": "ne_110m_admin_0_countries"}
+                },
+            "mark": {"type": "geoshape", "fill": "lightgray", "stroke": "grey"},
+            "encoding": {
+                "tooltip": [
+                    {"field": "properties.NAME", "type": "nominal", "title": "Country"}
+                    
+                ]
+            }
+        },
+        {
+            "data": {
+              "url": "https://raw.githubusercontent.com/FIT3179/Vega-Lite/main/7_others/oceans.topojson",
+              "format": {"type": "topojson", "feature": "oceans"}
+            },
+            "mark": {"type": "geoshape", "fill": "skyblue", "opacity": 0.25}
+        },
+        {
+                "data": {
+                    "url": "https://raw.githubusercontent.com/ChaiXuen/FIT3179_Homework_W9/main/js/ne_110m.json",
+                    "format": {"type": "topojson", "feature": "ne_110m_admin_0_countries"}
+                    },
+            "transform": [
+                {
+                "lookup": "properties.NAME",
+                "from": {
+                    "data": {
+                        "url": "https://raw.githubusercontent.com/ChaiXuen/FIT3179_Homework_W9/main/data/movies_cleaned.csv"
+                    },
+                    "key": "country",
+                    "fields": ["most_popular_genre"]
+                    }
+                }
+                
+            ],
+            "mark": {"type": "geoshape"},
+            "encoding": {
+                "color": {
+                "field": "most_popular_genre",
+                "type": "nominal",
+                "scale": {
+                    "domain": ["Adventure", "Horror", "Crime", "Action", "Drama", "Comedy", "Biography", "Animation"],
+                    "range": ["#0C354C", "#D42A2A", "#50260D", "#7D3C60", "#F333AC", "#F0E442", "#56B4E9", "#009E73"]
+                    },
+                "legend": {"title": "Movie Genre"}
+                },
+                "tooltip": [
+                    {"field": "properties.NAME", "type": "nominal", "title": "Country"},
+                    {"field": "most_popular_genre", "type": "nominal", "title" : "Most Popular Genre"}
+                ]
+            }
+        },
+        {
+            "data": {
+                "url": "https://raw.githubusercontent.com/ChaiXuen/FIT3179_Homework_W9/main/js/ne_110m.json",
+                "format": {"type": "topojson", "feature": "ne_110m_graticules_30"}
+                },
+            "mark": {"type": "geoshape", "fill": null, "stroke": "lightgrey", "opacity": 0.45}
+            
+        }
+    ]
+}
